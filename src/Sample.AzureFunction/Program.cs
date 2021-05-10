@@ -3,6 +3,7 @@ using MassTransit;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Sample.AzureFunction.Consumers;
+using Sample.AzureFunction.Sagas;
 
 namespace Sample.AzureFunction
 {
@@ -19,15 +20,26 @@ namespace Sample.AzureFunction
                 .ConfigureFunctionsWorkerDefaults()
                 .ConfigureServices((hostContext, services) =>
                 {
+                    services.AddScoped<CreateOrderFunctions>();
                     services.AddScoped<SubmitOrderFunctions>();
                     services.AddScoped<AuditOrderFunctions>();
 
                     services.AddMassTransit(x =>
                     {
-                        x.AddConsumer<SubmitOrderConsumer>();
                         x.AddConsumer<AuditOrderConsumer>();
-
-                        x.UsingAzureServiceBus((context, cfg) => { cfg.Host(hostContext.Configuration["ServiceBusConnection"]); });
+                        
+                        //x.SetMessageSessionSagaRepositoryProvider();
+                        x.SetInMemorySagaRepositoryProvider();
+                        
+                        x.AddSagaStateMachine(typeof(SubmitOrderStateMachine), typeof(SubmitOrderStateMachineDefinition));
+                        
+                        x.UsingAzureServiceBus((context, cfg) =>
+                        {
+                            cfg.Host(hostContext.Configuration["ServiceBusConnection"]);
+                            
+                            cfg.ClearMessageDeserializers();
+                            cfg.UseRawJsonSerializer();
+                        });
 
                         x.AddRider(r =>
                         {
@@ -43,6 +55,8 @@ namespace Sample.AzureFunction
                             cfg.ClearMessageDeserializers();
                             cfg.UseRawJsonSerializer();
                         });
+                        
+                        
                     });
 
                     services.AddMassTransitHostedService(true);

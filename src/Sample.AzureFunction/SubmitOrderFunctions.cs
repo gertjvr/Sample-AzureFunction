@@ -1,18 +1,17 @@
 using System.Threading.Tasks;
 using MassTransit.Transports;
 using Microsoft.Azure.Functions.Worker;
-using Sample.AzureFunction.Consumers;
+using Sample.AzureFunction.Sagas;
 
 namespace Sample.AzureFunction
 {
     public class SubmitOrderFunctions
     {
         const string SubmitOrderQueueName = "submit-order";
-        readonly IReceiveEndpointDispatcher<SubmitOrderConsumer> _dispatcher;
+        readonly IReceiveEndpointDispatcher<SubmitOrderStateMachine> _dispatcher;
 
-        public SubmitOrderFunctions(IReceiveEndpointDispatcher<SubmitOrderConsumer> dispatcher)
+        public SubmitOrderFunctions(IReceiveEndpointDispatcher<SubmitOrderStateMachine> dispatcher)
         {
-            _dispatcher = dispatcher;
             _dispatcher = dispatcher;
         }
 
