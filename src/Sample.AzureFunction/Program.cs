@@ -36,6 +36,11 @@ namespace Sample.AzureFunction
                         x.UsingAzureServiceBus((context, cfg) =>
                         {
                             cfg.Host(hostContext.Configuration["ServiceBusConnection"]);
+                            
+                            cfg.Send<SubmitOrder>(x =>
+                            {
+                                x.UseSessionIdFormatter(context => context.Message.OrderId.ToString());
+                            });
                         });
 
                         x.AddRider(r =>

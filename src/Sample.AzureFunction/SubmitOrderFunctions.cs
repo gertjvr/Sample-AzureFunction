@@ -16,7 +16,7 @@ namespace Sample.AzureFunction
         }
 
         [Function("SubmitOrder")]
-        public Task SubmitOrderAsync([ServiceBusTrigger(SubmitOrderQueueName, Connection = "ServiceBusConnection")]
+        public Task SubmitOrderAsync([ServiceBusTrigger(SubmitOrderQueueName, Connection = "ServiceBusConnection", IsSessionsEnabled = true)]
             byte[] body, FunctionContext context)
         {
             return _dispatcher.Dispatch(context, body);

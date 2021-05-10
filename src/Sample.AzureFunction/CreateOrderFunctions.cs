@@ -27,10 +27,13 @@ namespace Sample.AzureFunction
 
             var endpoint = await _sendEndpointProvider.GetSendEndpoint(new Uri("queue:submit-order"));
 
+            var orderId = Guid.NewGuid();
+            var orderNumber = "123";
+            
             await endpoint.Send<SubmitOrder>(new
             {
-                OrderId = Guid.NewGuid(),
-                OrderNumber = "123"
+                OrderId = orderId,
+                OrderNumber = orderNumber
             });
 
             var response = req.CreateResponse(HttpStatusCode.OK);
