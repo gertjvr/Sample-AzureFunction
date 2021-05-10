@@ -23,22 +23,19 @@ namespace Sample.AzureFunction
                     services.AddScoped<CreateOrderFunctions>();
                     services.AddScoped<SubmitOrderFunctions>();
                     services.AddScoped<AuditOrderFunctions>();
-
+                    
                     services.AddMassTransit(x =>
                     {
+                        x.SetKebabCaseEndpointNameFormatter();
+                        
                         x.AddConsumer<AuditOrderConsumer>();
                         
-                        //x.SetMessageSessionSagaRepositoryProvider();
-                        x.SetInMemorySagaRepositoryProvider();
-                        
-                        x.AddSagaStateMachine(typeof(SubmitOrderStateMachine), typeof(SubmitOrderStateMachineDefinition));
-                        
+                        x.AddSagaStateMachine<SubmitOrderStateMachine, SumbitOrderState, SubmitOrderStateMachineDefinition>()
+                            .MessageSessionRepository();
+
                         x.UsingAzureServiceBus((context, cfg) =>
                         {
                             cfg.Host(hostContext.Configuration["ServiceBusConnection"]);
-                            
-                            cfg.ClearMessageDeserializers();
-                            cfg.UseRawJsonSerializer();
                         });
 
                         x.AddRider(r =>
@@ -46,17 +43,8 @@ namespace Sample.AzureFunction
                             r.UsingEventHub((context, cfg) =>
                             {
                                 cfg.Host(hostContext.Configuration["EventHubConnection"]);
-                                cfg.UseRawJsonSerializer();
                             });
                         });
-
-                        x.ConfigureReceiveEndpoint((_, cfg) =>
-                        {
-                            cfg.ClearMessageDeserializers();
-                            cfg.UseRawJsonSerializer();
-                        });
-                        
-                        
                     });
 
                     services.AddMassTransitHostedService(true);

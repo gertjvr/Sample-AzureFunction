@@ -11,13 +11,13 @@ namespace Sample.AzureFunction.Sagas
         {
             EndpointName = "submit-order";
         }
-
+    
         protected override void ConfigureSaga(IReceiveEndpointConfigurator endpointConfigurator, ISagaConfigurator<SumbitOrderState> sagaConfigurator)
         {
-            // var ep = (IServiceBusReceiveEndpointConfigurator) endpointConfigurator;
-            // ep.RequiresSession = true;
+            var ep = (IServiceBusReceiveEndpointConfigurator) endpointConfigurator;
+            ep.RequiresSession = true;
             
-            //endpointConfigurator.UseMessageRetry(r => r.Interval(5, 1000));
+            endpointConfigurator.UseMessageRetry(r => r.Interval(5, 1000));
         }
     }
 }

@@ -2,12 +2,13 @@
 using Automatonymous;
 using MassTransit;
 using MassTransit.EventHubIntegration;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Sample.AzureFunction.Sagas
 {
     public class SubmitOrderStateMachine : MassTransitStateMachine<SumbitOrderState>
     {
-        public SubmitOrderStateMachine(IEventHubProducerProvider producerProvider)
+        public SubmitOrderStateMachine()
         {
             Event(() => SubmitOrder, configurator =>
             {
@@ -19,8 +20,10 @@ namespace Sample.AzureFunction.Sagas
             Initially(When(SubmitOrder)
                 .ThenAsync(async context =>
                 {
+                    context.TryGetPayload<IServiceProvider>(out var provider);
+                    var producerProvider = provider.GetService<IEventHubProducerProvider>();
                     var producer = await producerProvider.GetProducer(AuditOrderFunctions.AuditOrderEventHubName);
-
+    
                     await producer.Produce<OrderReceived>(new
                     {
                         context.Data.OrderNumber,

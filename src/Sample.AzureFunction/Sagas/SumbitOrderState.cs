@@ -1,4 +1,4 @@
-using System;
+ using System;
 using Automatonymous;
 
 namespace Sample.AzureFunction.Sagas
