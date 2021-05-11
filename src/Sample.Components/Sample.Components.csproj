@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net5.0</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="MassTransit" Version="7.2.0-develop.77" />
+      <PackageReference Include="MassTransit.Azure.ServiceBus.Core" Version="7.2.0-develop.77" />
+      <PackageReference Include="MassTransit.EventHub" Version="7.2.0-develop.77" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Sample.Contracts\Sample.Contracts.csproj" />
+    </ItemGroup>
+
+</Project>

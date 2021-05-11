@@ -2,9 +2,11 @@
 using System.Net;
 using System.Threading.Tasks;
 using MassTransit;
+using MassTransit.Azure.ServiceBus.Core;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Logging;
+using Sample.Contracts;
 
 namespace Sample.AzureFunction
 {
@@ -19,13 +21,13 @@ namespace Sample.AzureFunction
         }
 
         [Function("CreateOrder")]
-        public async Task<HttpResponseData> Run([HttpTrigger(AuthorizationLevel.Anonymous, "get", "post")] HttpRequestData req,
+        public async Task<HttpResponseData> CreateOrderAsync([HttpTrigger(AuthorizationLevel.Anonymous, "get", "post")] HttpRequestData req,
             FunctionContext executionContext)
         {
             var logger = executionContext.GetLogger("CreateOrder");
             logger.LogInformation("C# HTTP trigger function processed a request.");
 
-            var endpoint = await _sendEndpointProvider.GetSendEndpoint(new Uri("queue:submit-order"));
+            var endpoint = await _sendEndpointProvider.GetSendEndpoint(new Uri("queue:submit-order-state"));
 
             var orderId = Guid.NewGuid();
             var orderNumber = "123";
@@ -39,7 +41,7 @@ namespace Sample.AzureFunction
             var response = req.CreateResponse(HttpStatusCode.OK);
             response.Headers.Add("Content-Type", "text/plain; charset=utf-8");
 
-            await response.WriteStringAsync("Welcome to Azure Functions!");
+            await response.WriteStringAsync("Order Submitted");
 
             return response;
         }

@@ -3,7 +3,7 @@ using MassTransit;
 using MassTransit.Azure.ServiceBus.Core;
 using MassTransit.Definition;
 
-namespace Sample.AzureFunction.Sagas
+namespace Sample.Components.Sagas
 {
     public class SubmitOrderStateMachineDefinition : SagaDefinition<SubmitOrderState>
     {

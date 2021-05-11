@@ -23,4 +23,8 @@
       <CopyToPublishDirectory>Never</CopyToPublishDirectory>
     </None>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Sample.Components\Sample.Components.csproj" />
+    <ProjectReference Include="..\Sample.Contracts\Sample.Contracts.csproj" />
+  </ItemGroup>
 </Project>

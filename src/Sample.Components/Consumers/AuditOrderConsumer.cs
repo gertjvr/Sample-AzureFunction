@@ -1,8 +1,9 @@
 using System.Threading.Tasks;
 using MassTransit;
 using MassTransit.Context;
+using Sample.Contracts;
 
-namespace Sample.AzureFunction.Consumers
+namespace Sample.Components.Consumers
 {
     public class AuditOrderConsumer :
         IConsumer<OrderReceived>

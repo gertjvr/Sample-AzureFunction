@@ -1,4 +1,4 @@
-namespace Sample.AzureFunction.Consumers
+namespace Sample.Components.Consumers
 {
     public struct ConsumerNamespace
     {

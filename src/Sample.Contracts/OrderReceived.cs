@@ -1,6 +1,6 @@
 using System;
 
-namespace Sample.AzureFunction
+namespace Sample.Contracts
 {
     public interface OrderReceived
     {

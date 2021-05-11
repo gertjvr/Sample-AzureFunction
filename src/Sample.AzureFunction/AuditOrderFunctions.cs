@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
 using MassTransit.Transports;
 using Microsoft.Azure.Functions.Worker;
-using Sample.AzureFunction.Consumers;
+using Sample.Components.Consumers;
 
 namespace Sample.AzureFunction
 {
@@ -19,7 +19,7 @@ namespace Sample.AzureFunction
         public Task AuditOrderAsync([EventHubTrigger(AuditOrderEventHubName, Connection = "EventHubConnection", IsBatched = false)]
             byte[] body, FunctionContext context)
         {
-            return _dispatcher.Dispatch(context, body);
+            return _dispatcher.Dispatch(body, context);
         }
     }
 }

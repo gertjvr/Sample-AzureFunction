@@ -2,8 +2,9 @@ using System.Threading.Tasks;
 using MassTransit;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Sample.AzureFunction.Consumers;
 using Sample.AzureFunction.Sagas;
+using Sample.Components.Consumers;
+using Sample.Contracts;
 
 namespace Sample.AzureFunction
 {
@@ -30,7 +31,7 @@ namespace Sample.AzureFunction
                         
                         x.AddConsumer<AuditOrderConsumer>();
                         
-                        x.AddSagaStateMachine<SubmitOrderStateMachine, SumbitOrderState, SubmitOrderStateMachineDefinition>()
+                        x.AddSagaStateMachine<SubmitOrderStateMachine, SubmitOrderState, SubmitOrderStateMachineDefinition>()
                             .MessageSessionRepository();
 
                         x.UsingAzureServiceBus((context, cfg) =>

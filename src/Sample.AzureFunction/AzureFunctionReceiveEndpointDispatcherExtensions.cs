@@ -9,7 +9,7 @@ namespace Sample.AzureFunction
 {
     public static class AzureFunctionReceiveEndpointDispatcherExtensions
     {
-        public static Task Dispatch(this IReceiveEndpointDispatcher dispatcher, FunctionContext context, byte[] body,
+        public static Task Dispatch(this IReceiveEndpointDispatcher dispatcher, byte[] body, FunctionContext context,
             CancellationToken cancellationToken = default)
         {
             return dispatcher.Dispatch(body, context.BindingContext.BindingData, cancellationToken,

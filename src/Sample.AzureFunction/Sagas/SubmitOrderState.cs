@@ -3,9 +3,10 @@ using Automatonymous;
 
 namespace Sample.AzureFunction.Sagas
 {
-    public class SumbitOrderState : SagaStateMachineInstance
+    public class SubmitOrderState : SagaStateMachineInstance
     {
         public Guid CorrelationId { get; set; }
         public int CurrentState { get; set; }
+        public DateTime? Timestamp { get; set; }
     }
 }

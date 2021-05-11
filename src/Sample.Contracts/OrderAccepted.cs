@@ -1,8 +1,8 @@
 using System;
 
-namespace Sample.AzureFunction
+namespace Sample.Contracts
 {
-    public interface SubmitOrder
+    public interface OrderAccepted
     {
         Guid OrderId { get; }
         string OrderNumber { get; }

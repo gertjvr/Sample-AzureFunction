@@ -7,19 +7,19 @@ namespace Sample.AzureFunction
 {
     public class SubmitOrderFunctions
     {
-        const string SubmitOrderQueueName = "submit-order";
-        readonly IReceiveEndpointDispatcher<SubmitOrderStateMachine> _dispatcher;
+        private const string SubmitOrderStateQueueName = "submit-order-state";
+        private readonly IReceiveEndpointDispatcher<SubmitOrderState> _dispatcher;
 
-        public SubmitOrderFunctions(IReceiveEndpointDispatcher<SubmitOrderStateMachine> dispatcher)
+        public SubmitOrderFunctions(IReceiveEndpointDispatcher<SubmitOrderState> dispatcher)
         {
             _dispatcher = dispatcher;
         }
 
-        [Function("SubmitOrder")]
-        public Task SubmitOrderAsync([ServiceBusTrigger(SubmitOrderQueueName, Connection = "ServiceBusConnection", IsSessionsEnabled = true)]
+        [Function("SubmitOrderState")]
+        public Task SubmitOrderStateAsync([ServiceBusTrigger(SubmitOrderStateQueueName, Connection = "ServiceBusConnection", IsSessionsEnabled = true)]
             byte[] body, FunctionContext context)
         {
-            return _dispatcher.Dispatch(context, body);
+            return _dispatcher.Dispatch(body, context);
         }
     }
 }

@@ -4,8 +4,8 @@ using System.Threading.Tasks;
 using MassTransit;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Sample.AzureFunction.Consumers;
 using Sample.AzureFunction.Sagas;
+using Sample.Components.Consumers;
 
 namespace Deploy
 {
@@ -25,7 +25,7 @@ namespace Deploy
             {
                 x.AddConsumer<AuditOrderConsumer>();
 
-                x.AddSagaStateMachine<SubmitOrderStateMachine, SumbitOrderState, SubmitOrderStateMachineDefinition>()
+                x.AddSagaStateMachine<SubmitOrderStateMachine, SubmitOrderState, SubmitOrderStateMachineDefinition>()
                     .MessageSessionRepository();
 
                 x.SetKebabCaseEndpointNameFormatter();

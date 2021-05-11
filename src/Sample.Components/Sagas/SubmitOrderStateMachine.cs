@@ -3,7 +3,7 @@ using Automatonymous;
 using MassTransit;
 using Sample.Contracts;
 
-namespace Sample.AzureFunction.Sagas
+namespace Sample.Components.Sagas
 {
     public class SubmitOrderStateMachine : MassTransitStateMachine<SubmitOrderState>
     {
@@ -21,7 +21,7 @@ namespace Sample.AzureFunction.Sagas
                 {
                     x.Instance.Timestamp = DateTime.UtcNow;
                 })
-                .Produce(x => AuditOrderFunctions.AuditOrderEventHubName, context => context.Init<OrderReceived>(new
+                .Produce(context => "audit-order", context => context.Init<OrderReceived>(new
                 {
                     context.Data.OrderNumber,
                     Timestamp = DateTime.UtcNow
